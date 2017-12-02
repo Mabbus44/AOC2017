@@ -38,7 +38,7 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
   wincl.cbClsExtra = 0;                      /* No extra bytes after the window class */
   wincl.cbWndExtra = 0;                      /* structure or the window instance */
   /* Use Windows's default colour as the background of the window */
-  wincl.hbrBackground = (HBRUSH) COLOR_BACKGROUND;
+  wincl.hbrBackground = CreateSolidBrush(RGB(255, 255, 255));
 
   /* Register the window class, and if it fails quit the program */
   if (!RegisterClassEx (&wincl))
@@ -96,7 +96,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
           case BN_CLICKED:
             switch( LOWORD(wParam) )
             {
-              case T011_OPEN_FILE:
+              case T000_OPEN_FILE:
                 OPENFILENAME ofn;
                 char filename[256];
                 ZeroMemory( &ofn , sizeof( ofn));
@@ -115,45 +115,11 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
                       return 0;
                   }
 
-                  /*
-                  char letter;
-                  file.get(letter);
-                  int firstDigit = (int)letter - 48;
-                  if(firstDigit>9 || firstDigit<0)
-                  {
-                      MessageBox(hwnd, "First letter in file not a number", "Error", MB_OK);
-                      return 0;
-                  }
-                  int digit = 0;
-                  int lastDigit = firstDigit;
-                  int sum = 0;
-                  while(file.get(letter))
-                  {
-                    digit = (int)letter - 48;
-                    if(digit>=0 && digit<=9)
-                    {
-                      if(digit == lastDigit)
-                      {
-                        sum += digit;
-                      }
-                      lastDigit = digit;
-                    }
-                  }
-                  if(lastDigit == firstDigit)
-                    sum += lastDigit;
-                  std::string ans;
-                  std::stringstream out;
-                  out << sum;
-                  ans = out.str();
-                  MessageBox(hwnd, ans.c_str(), "Answer", MB_OK);*/
+//*************************************** DAY 1 ***************************************
 
-
-
-                  char letter;
+/*                  char letter;
                   std::list<int> digits;
-                  int digit = 0;
-                  int sum = 0;
-
+                  int digit;
                   while(file.get(letter))
                   {
                     digit = (int)letter - 48;
@@ -163,30 +129,110 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
                   std::list<int>::iterator it;
                   int digitsArray[digits.size()];
                   it = digits.begin();
-                  for(int i = 0; i<digits.size(); i++)
+                  for(unsigned int i = 0; i<digits.size(); i++)
                   {
                     digitsArray[i] = *it;
                     ++it;
                   }
-                  for(int i=0; i<digits.size(); i++)
+
+                  int sum1 = 0;
+                  for(unsigned int i = 0; i<digits.size()-1; i++)
+                      if(digitsArray[i] == digitsArray[i+1])
+                        sum1 += digitsArray[i];
+                  if(digitsArray[0] == digitsArray[digits.size()-1])
+                    sum1 += digitsArray[0];
+
+                  int sum2 = 0;
+                  for(unsigned int i=0; i<digits.size(); i++)
                   {
-                    int i2 = i + digits.size()/2;
+                    unsigned int i2 = i + digits.size()/2;
                     if(i2 >= digits.size())
                       i2 -= digits.size();
                     if(digitsArray[i] == digitsArray[i2])
-                      sum += digitsArray[i];
+                      sum2 += digitsArray[i];
                   }
                   std::string ans;
                   std::stringstream out;
-                  out << sum;
+                  out << "Part 1: " << sum1 << "\nPart 2: " << sum2;
                   ans = out.str();
-                  MessageBox(hwnd, ans.c_str(), "Answer", MB_OK);
+                  SetWindowText(GetDlgItem(hwnd, T000_ANS), ans.c_str());*/
 
+//*************************************** DAY 2 ***************************************
+                  char letter;
+                  int number = 0;
+                  std::list<int> numbers;
+                  std::list<std::list<int>> rows;
+                  int digit;
+                  while(file.get(letter))
+                  {
+                    switch ((int)letter)
+                    {
+                      case 9:     //End of number
+                        if(number != 0)
+                          numbers.push_back(number);
+                        number = 0;
+                        break;
+                      case 10:    //End of row
+                        if(number != 0)
+                          numbers.push_back(number);
+                        number = 0;
+                        if(numbers.size()>0)
+                          rows.push_back(numbers);
+                        numbers.clear();
+                        break;
+                      default:    //Hopefully a digit
+                        digit = (int)letter - 48;
+                        if(digit<0 && digit>9)
+                          MessageBox(NULL, "Unknown char found", "warning",MB_OK);
+                        else
+                        {
+                          number *= 10;
+                          number += digit;
+                        }
+                    }
+                  }
+                  int sum1 = 0;
+                  for (std::list<std::list<int>>::const_iterator it1 = rows.begin(); it1 != rows.end(); ++it1)
+                  {
+                    unsigned int min = -1;
+                    unsigned int max = 0;
+                    for (std::list<int>::const_iterator it2 = it1->begin(); it2 != it1->end(); ++it2)
+                    {
+                      if(*it2 < min)
+                        min = *it2;
+                      if(*it2 > max)
+                        max = *it2;
+                    }
+                    sum1 += max-min;
+                  }
+                  int sum2=0;
+                  for (std::list<std::list<int>>::const_iterator it1 = rows.begin(); it1 != rows.end(); ++it1)
+                    for (std::list<int>::const_iterator it2 = it1->begin(); it2 != it1->end(); ++it2)
+                      for (std::list<int>::const_iterator it3 = it1->begin(); it3 != it1->end(); ++it3)
+                        if(*it2%(*it3) == 0 && *it2/(*it3) != 1)
+                          sum2 += *it2/(*it3);
+                  std::string ans;
+                  std::stringstream out;
+                  out << "Part 1: " << sum1 << "\nPart 2: " << sum2;
+                  ans = out.str();
+                  SetWindowText(GetDlgItem(hwnd, T000_ANS), ans.c_str());
                 }
                 break;
             }
             break;
         }
+        break;
+
+      case WM_CTLCOLORSTATIC:
+      {
+        //DWORD CtrlID = GetDlgCtrlID((HWND)lParam); //Window Control ID
+        //if (CtrlID == IDC_STATIC) //If desired control
+        HDC hdcStatic = (HDC) wParam;
+        SetBkColor(hdcStatic, RGB(255,255,255));
+        static HBRUSH hBrush = CreateSolidBrush(RGB(255,255,255));
+        return (INT_PTR)hBrush;
+        break;
+      }
       default:                      /* for messages that we don't deal with */
         return DefWindowProc (hwnd, message, wParam, lParam);
     }

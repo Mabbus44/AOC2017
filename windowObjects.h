@@ -3,7 +3,8 @@
 
 #include <windows.h>
 
-#define T011_OPEN_FILE 100
+#define T000_OPEN_FILE  100
+#define T000_ANS       101
 
 void defineWindowObjects(HWND hwnd);
 
