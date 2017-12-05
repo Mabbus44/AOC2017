@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1512241292 source:c:\users\mabbus\documents\c++ projects\advent of code\aoc2017\main.cpp
+1512407932 source:c:\users\mabbus\documents\c++ projects\advent of code\aoc2017\main.cpp
 	<tchar.h>
 	<windows.h>
 	<Commdlg.h>
@@ -8,11 +8,21 @@
 	<string>
 	<sstream>
 	<list>
+	<math.h>
 	"windowObjects.h"
+	"smallClasses.h"
 
-1512237570 c:\users\mabbus\documents\c++ projects\advent of code\aoc2017\windowobjects.h
+1512407286 c:\users\mabbus\documents\c++ projects\advent of code\aoc2017\windowobjects.h
+	"smallClasses.h"
+	<list>
+	<string.h>
+	<iostream>
+	<sstream>
 	<windows.h>
 
-1512237629 source:c:\users\mabbus\documents\c++ projects\advent of code\aoc2017\windowobjects.cpp
+1512408305 source:c:\users\mabbus\documents\c++ projects\advent of code\aoc2017\windowobjects.cpp
 	"windowObjects.h"
+
+1512407063 c:\users\mabbus\documents\c++ projects\advent of code\aoc2017\smallclasses.h
+	<windows.h>
 

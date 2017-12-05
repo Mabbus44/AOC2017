@@ -6,7 +6,9 @@
 #include <string>
 #include <sstream>
 #include <list>
+#include <math.h>
 #include "windowObjects.h"
+#include "smallClasses.h"
 
 /*  Declare Windows procedure  */
 LRESULT CALLBACK WindowProcedure (HWND, UINT, WPARAM, LPARAM);
@@ -29,7 +31,6 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
   wincl.lpfnWndProc = WindowProcedure;      /* This function is called by windows */
   wincl.style = CS_DBLCLKS;                 /* Catch double-clicks */
   wincl.cbSize = sizeof (WNDCLASSEX);
-
   /* Use default icon and mouse-pointer */
   wincl.hIcon = LoadIcon (NULL, IDI_APPLICATION);
   wincl.hIconSm = LoadIcon (NULL, IDI_APPLICATION);
@@ -39,7 +40,6 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
   wincl.cbWndExtra = 0;                      /* structure or the window instance */
   /* Use Windows's default colour as the background of the window */
   wincl.hbrBackground = CreateSolidBrush(RGB(255, 255, 255));
-
   /* Register the window class, and if it fails quit the program */
   if (!RegisterClassEx (&wincl))
     return 0;
@@ -64,7 +64,6 @@ int WINAPI WinMain (HINSTANCE hThisInstance,
   ShowWindow (hwnd, nCmdShow);
 
   defineWindowObjects(hwnd);
-
   /* Run the message loop. It will run until GetMessage() returns 0 */
   while (GetMessage (&messages, NULL, 0, 0))
   {
@@ -114,119 +113,158 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
                       MessageBox(hwnd, "Could not open file", "Error", MB_OK);
                       return 0;
                   }
-
+                  HWND selectedDayCB = GetDlgItem(hwnd, T000_DAY_SELECTION);
+                  int selectedDay = SendMessage(selectedDayCB, CB_GETCURSEL, 0, 0) + 1;
+                  int ans1 = 0;
+                  int ans2 = 0;
+                  std::string debugAns;
+                  switch(selectedDay)
+                  {
 //*************************************** DAY 1 ***************************************
-
-/*                  char letter;
-                  std::list<int> digits;
-                  int digit;
-                  while(file.get(letter))
-                  {
-                    digit = (int)letter - 48;
-                    if(digit>=0 && digit<=9)
-                      digits.push_back(digit);
-                  }
-                  std::list<int>::iterator it;
-                  int digitsArray[digits.size()];
-                  it = digits.begin();
-                  for(unsigned int i = 0; i<digits.size(); i++)
-                  {
-                    digitsArray[i] = *it;
-                    ++it;
-                  }
-
-                  int sum1 = 0;
-                  for(unsigned int i = 0; i<digits.size()-1; i++)
-                      if(digitsArray[i] == digitsArray[i+1])
-                        sum1 += digitsArray[i];
-                  if(digitsArray[0] == digitsArray[digits.size()-1])
-                    sum1 += digitsArray[0];
-
-                  int sum2 = 0;
-                  for(unsigned int i=0; i<digits.size(); i++)
-                  {
-                    unsigned int i2 = i + digits.size()/2;
-                    if(i2 >= digits.size())
-                      i2 -= digits.size();
-                    if(digitsArray[i] == digitsArray[i2])
-                      sum2 += digitsArray[i];
-                  }
-                  std::string ans;
-                  std::stringstream out;
-                  out << "Part 1: " << sum1 << "\nPart 2: " << sum2;
-                  ans = out.str();
-                  SetWindowText(GetDlgItem(hwnd, T000_ANS), ans.c_str());*/
-
-//*************************************** DAY 2 ***************************************
-                  char letter;
-                  int number = 0;
-                  std::list<int> numbers;
-                  std::list<std::list<int>> rows;
-                  int digit;
-                  while(file.get(letter))
-                  {
-                    switch ((int)letter)
+                    case 1:
                     {
-                      case 9:     //End of number
-                        if(number != 0)
-                          numbers.push_back(number);
-                        number = 0;
-                        break;
-                      case 10:    //End of row
-                        if(number != 0)
-                          numbers.push_back(number);
-                        number = 0;
-                        if(numbers.size()>0)
-                          rows.push_back(numbers);
-                        numbers.clear();
-                        break;
-                      default:    //Hopefully a digit
+                      char letter;
+                      std::list<int> digits;
+                      int digit;
+                      while(file.get(letter))
+                      {
                         digit = (int)letter - 48;
-                        if(digit<0 && digit>9)
-                          MessageBox(NULL, "Unknown char found", "warning",MB_OK);
-                        else
-                        {
-                          number *= 10;
-                          number += digit;
-                        }
+                        if(digit>=0 && digit<=9)
+                          digits.push_back(digit);
+                      }
+                      std::list<int>::iterator it;
+                      int digitsArray[digits.size()];
+                      it = digits.begin();
+                      for(unsigned int i = 0; i<digits.size(); i++)
+                      {
+                        digitsArray[i] = *it;
+                        ++it;
+                      }
+
+                      for(unsigned int i = 0; i<digits.size()-1; i++)
+                          if(digitsArray[i] == digitsArray[i+1])
+                            ans1 += digitsArray[i];
+                      if(digitsArray[0] == digitsArray[digits.size()-1])
+                        ans1 += digitsArray[0];
+
+                      for(unsigned int i=0; i<digits.size(); i++)
+                      {
+                        unsigned int i2 = i + digits.size()/2;
+                        if(i2 >= digits.size())
+                          i2 -= digits.size();
+                        if(digitsArray[i] == digitsArray[i2])
+                          ans2 += digitsArray[i];
+                      }
+                      std::string ans;
+                      std::stringstream out;
+                      out << "Part 1: " << ans1 << "\nPart 2: " << ans2;
+                      ans = out.str();
+                      SetWindowText(GetDlgItem(hwnd, T000_ANS), ans.c_str());
+                      break;
                     }
-                  }
-                  int sum1 = 0;
-                  for (std::list<std::list<int>>::const_iterator it1 = rows.begin(); it1 != rows.end(); ++it1)
-                  {
-                    unsigned int min = -1;
-                    unsigned int max = 0;
-                    for (std::list<int>::const_iterator it2 = it1->begin(); it2 != it1->end(); ++it2)
+//*************************************** DAY 2 ***************************************
+                    case 2:
                     {
-                      if(*it2 < min)
-                        min = *it2;
-                      if(*it2 > max)
-                        max = *it2;
+                      char letter;
+                      int number = 0;
+                      std::list<int> numbers;
+                      std::list<std::list<int>> rows;
+                      int digit;
+                      while(file.get(letter))
+                      {
+                        switch ((int)letter)
+                        {
+                          case 9:     //End of number
+                            if(number != 0)
+                              numbers.push_back(number);
+                            number = 0;
+                            break;
+                          case 10:    //End of row
+                            if(number != 0)
+                              numbers.push_back(number);
+                            number = 0;
+                            if(numbers.size()>0)
+                              rows.push_back(numbers);
+                            numbers.clear();
+                            break;
+                          default:    //Hopefully a digit
+                            digit = (int)letter - 48;
+                            if(digit<0 && digit>9)
+                              MessageBox(NULL, "Unknown char found", "warning",MB_OK);
+                            else
+                            {
+                              number *= 10;
+                              number += digit;
+                            }
+                        }
+                      }
+                      for (std::list<std::list<int>>::const_iterator it1 = rows.begin(); it1 != rows.end(); ++it1)
+                      {
+                        unsigned int min = -1;
+                        unsigned int max = 0;
+                        for (std::list<int>::const_iterator it2 = it1->begin(); it2 != it1->end(); ++it2)
+                        {
+                          if((unsigned int)(*it2) < min)
+                            min = *it2;
+                          if((unsigned int)(*it2) > max)
+                            max = *it2;
+                        }
+                        ans1 += max-min;
+                      }
+                      for (std::list<std::list<int>>::const_iterator it1 = rows.begin(); it1 != rows.end(); ++it1)
+                        for (std::list<int>::const_iterator it2 = it1->begin(); it2 != it1->end(); ++it2)
+                          for (std::list<int>::const_iterator it3 = it1->begin(); it3 != it1->end(); ++it3)
+                            if(*it2%(*it3) == 0 && *it2/(*it3) != 1)
+                              ans2 += *it2/(*it3);
+                      break;
                     }
-                    sum1 += max-min;
+                    default:
+                      break;
                   }
-                  int sum2=0;
-                  for (std::list<std::list<int>>::const_iterator it1 = rows.begin(); it1 != rows.end(); ++it1)
-                    for (std::list<int>::const_iterator it2 = it1->begin(); it2 != it1->end(); ++it2)
-                      for (std::list<int>::const_iterator it3 = it1->begin(); it3 != it1->end(); ++it3)
-                        if(*it2%(*it3) == 0 && *it2/(*it3) != 1)
-                          sum2 += *it2/(*it3);
                   std::string ans;
                   std::stringstream out;
-                  out << "Part 1: " << sum1 << "\nPart 2: " << sum2;
+                  out << "Day " << selectedDay << "\nPart 1: " << ans1 << "\nPart 2: " << ans2;
                   ans = out.str();
                   SetWindowText(GetDlgItem(hwnd, T000_ANS), ans.c_str());
                 }
                 break;
             }
             break;
+          case CBN_SELCHANGE:
+          {
+            switch( LOWORD(wParam) )
+            {
+              case T000_DAY_SELECTION:
+              {
+                HWND selectedDayCB = GetDlgItem(hwnd, T000_DAY_SELECTION);
+                int selectedDay = SendMessage(selectedDayCB, CB_GETCURSEL, 0, 0) + 1;
+                HWND t000OpenFile = GetDlgItem(hwnd,T000_OPEN_FILE);
+                HWND t030Input = GetDlgItem(hwnd,T030_INPUT);
+                ShowWindow(t000OpenFile, SW_HIDE);
+                ShowWindow(t030Input, SW_HIDE);
+                switch(selectedDay)
+                {
+                  case 1:
+                    ShowWindow(t000OpenFile, SW_SHOW);
+                    break;
+                  case 2:
+                    ShowWindow(t000OpenFile, SW_SHOW);
+                    break;
+                  case 3:
+                    ShowWindow(t030Input, SW_SHOW);
+                    break;
+                  default:
+                    break;
+                }
+                break;
+              }
+            }
+          }
         }
         break;
 
       case WM_CTLCOLORSTATIC:
       {
-        //DWORD CtrlID = GetDlgCtrlID((HWND)lParam); //Window Control ID
-        //if (CtrlID == IDC_STATIC) //If desired control
         HDC hdcStatic = (HDC) wParam;
         SetBkColor(hdcStatic, RGB(255,255,255));
         static HBRUSH hBrush = CreateSolidBrush(RGB(255,255,255));
@@ -236,6 +274,5 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
       default:                      /* for messages that we don't deal with */
         return DefWindowProc (hwnd, message, wParam, lParam);
     }
-
     return 0;
 }

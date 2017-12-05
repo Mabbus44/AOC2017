@@ -41,6 +41,12 @@
 			<Add library="comctl32" />
 		</Linker>
 		<Unit filename="main.cpp" />
+		<Unit filename="smallClasses.cpp">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="smallClasses.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
 		<Unit filename="windowObjects.cpp" />
 		<Unit filename="windowObjects.h">
 			<Option target="&lt;{~None~}&gt;" />
