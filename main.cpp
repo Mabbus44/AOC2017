@@ -7,6 +7,7 @@
 #include <sstream>
 #include <list>
 #include <math.h>
+#include <algorithm>
 #include "windowObjects.h"
 #include "smallClasses.h"
 
@@ -218,6 +219,45 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
                               ans2 += *it2/(*it3);
                       break;
                     }
+//*************************************** DAY 4 ***************************************
+                    case 4:
+                    {
+                      std::string line;
+                      while(std::getline(file, line))
+                      {
+                        std::istringstream iss(line);
+                        std::list<std::string> passphrase;
+                        std::list<std::string> passphrase2;
+                        bool valid = true;
+                        bool valid2 = true;
+                        do
+                        {
+                            std::string subs;
+                            iss >> subs;
+                            if(subs.length() > 0)
+                            {
+                              std::list<std::string>::iterator it;
+                              for(it=passphrase.begin(); it!=passphrase.end(); ++it)
+                              {
+                                if(subs.compare(*it) == 0)
+                                  valid = false;
+                              }
+                              passphrase.push_back(subs);
+                              std::sort(subs.begin(), subs.end());
+                              for(it=passphrase2.begin(); it!=passphrase2.end(); ++it)
+                              {
+                                if(subs.compare(*it) == 0)
+                                  valid2 = false;
+                              }
+                              passphrase2.push_back(subs);
+                            }
+                        } while (iss);
+                        if(valid)
+                          ans1++;
+                        if(valid2)
+                          ans2++;
+                      }
+                    }
                     default:
                       break;
                   }
@@ -226,6 +266,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
                   out << "Day " << selectedDay << "\nPart 1: " << ans1 << "\nPart 2: " << ans2;
                   ans = out.str();
                   SetWindowText(GetDlgItem(hwnd, T000_ANS), ans.c_str());
+                  file.close();
                 }
                 break;
             }
@@ -245,9 +286,8 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
                 switch(selectedDay)
                 {
                   case 1:
-                    ShowWindow(t000OpenFile, SW_SHOW);
-                    break;
                   case 2:
+                  case 4:
                     ShowWindow(t000OpenFile, SW_SHOW);
                     break;
                   case 3:

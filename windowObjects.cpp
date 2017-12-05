@@ -8,11 +8,12 @@ LRESULT CALLBACK subEditProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
    switch (msg)
    {
-    case WM_KEYDOWN:
+    case WM_CHAR:
          switch (wParam)
          {
           case VK_RETURN:
-            day3(hwnd);
+            day3(GetParent(hwnd));
+            return 0;
             break;
          }
     default:
@@ -29,8 +30,9 @@ void defineWindowObjects(HWND hwnd)
   SendMessage(hwndCB, CB_ADDSTRING, 0, (LPARAM)"Day 1");
   SendMessage(hwndCB, CB_ADDSTRING, 0, (LPARAM)"Day 2");
   SendMessage(hwndCB, CB_ADDSTRING, 0, (LPARAM)"Day 3");
+  SendMessage(hwndCB, CB_ADDSTRING, 0, (LPARAM)"Day 4");
   SendMessage(hwndCB, CB_SETCURSEL, 0, 0);
-  HWND hwndEdit = CreateWindowEx(WS_EX_CLIENTEDGE, "EDIT", "asdfdf", WS_CHILD | WS_BORDER | ES_LEFT, 120, 10, 100, 20, hwnd, (HMENU)T030_INPUT, (HINSTANCE)GetWindowLong(hwnd, GWL_HINSTANCE), NULL);
+  HWND hwndEdit = CreateWindowEx(WS_EX_CLIENTEDGE, "EDIT", "", WS_CHILD | WS_BORDER | ES_LEFT, 120, 10, 100, 20, hwnd, (HMENU)T030_INPUT, (HINSTANCE)GetWindowLong(hwnd, GWL_HINSTANCE), NULL);
   oldEditProc = (WNDPROC)SetWindowLongPtr(hwndEdit, GWLP_WNDPROC, (LONG_PTR)subEditProc);
 }
 
@@ -38,20 +40,22 @@ void day3(HWND hwnd)
 {
   int vDist = 1, hDist = 1;
   int x = 0, y = 0;
-  int num = 1;
-  int input = 325489;
   int i = 0;
-  while(num != input)
+  int num = 1;
+  char inputText[1000];
+  GetWindowText(GetDlgItem(hwnd, T030_INPUT), inputText, sizeof(inputText));
+  int input = atoi(inputText);
+  while(num < input)
   {
     i = 0;
-    while(num != input && i != hDist)
+    while(num < input && i != hDist)
     {
       num++;
       i++;
       x++;
     }
     i = 0;
-    while(num != input && i != vDist)
+    while(num < input && i != vDist)
     {
       num++;
       i++;
@@ -60,14 +64,14 @@ void day3(HWND hwnd)
     i = 0;
     hDist++;
     vDist++;
-    while(num != input && i != hDist)
+    while(num < input && i != hDist)
     {
       num++;
       i++;
       x--;
     }
     i = 0;
-    while(num != input && i != vDist)
+    while(num < input && i != vDist)
     {
       num++;
       i++;
@@ -141,19 +145,4 @@ void day3(HWND hwnd)
   out << "Day 3\nPart 1: " << ans1 << "\nPart 2: " << ans2;
   ans = out.str();
   SetWindowText(GetDlgItem(hwnd, T000_ANS), ans.c_str());
-  HWND t000OpenFile = GetDlgItem(hwnd,T000_OPEN_FILE);
-  out << "t000OpenFile.i: " << t000OpenFile->i;
-  ans = out.str();
-  MessageBox(hwnd, ans.c_str(), "WHOOAAA", MB_OK);
-  HWND t030Input = GetDlgItem(hwnd,T030_INPUT);
-  out << "t030Input.i: " << t030Input->i;
-  ans = out.str();
-  MessageBox(hwnd, ans.c_str(), "WHOOAAA", MB_OK);
-  HWND t000Ans = GetDlgItem(hwnd,T000_ANS);
-  out << "t000Ans.i: " << t000Ans->i;
-  ans = out.str();
-  MessageBox(hwnd, ans.c_str(), "WHOOAAA", MB_OK);
-  ShowWindow(t000OpenFile, SW_HIDE);
-  ShowWindow(t030Input, SW_HIDE);
-  ShowWindow(t000Ans, SW_HIDE);
 }
