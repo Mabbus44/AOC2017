@@ -582,7 +582,44 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
                       out << "Day " << selectedDay << "\nPart 1: " << ans1 << "\nPart 2: " << ans2;
                       break;
                     }
-
+//*************************************** DAY 9 ***************************************
+                    case 9:
+                    {
+                      std::string line;
+                      std::getline(file, line);
+                      int score = 0;
+                      int totalScore = 0;
+                      int garbageCount = 0;
+                      bool garbage = false;
+                      bool ignoreNext = false;
+                      for(unsigned int i = 0; i < line.size(); ++i)
+                      {
+                        if(ignoreNext)
+                          ignoreNext = false;
+                        else
+                        {
+                          if(!garbage && line[i] == '{')
+                          {
+                            score++;
+                            totalScore += score;
+                          }
+                          if(!garbage && line[i] == '}')
+                            score--;
+                          if(line[i] == '!')
+                            ignoreNext = true;
+                          if(line[i] == '>')
+                            garbage = false;
+                          if(garbage && !ignoreNext)
+                            garbageCount++;
+                          if(line[i] == '<')
+                            garbage = true;
+                        }
+                      }
+                      ans1 = totalScore;
+                      ans2 = garbageCount;
+                      out << "Day " << selectedDay << "\nPart 1: " << ans1 << "\nPart 2: " << ans2;
+                      break;
+                    }
                     default:
                       break;
                   }
