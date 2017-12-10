@@ -25,6 +25,14 @@ class Day7Program
     int getMissingWeight(bool toBig);
 };
 
+class Day8Variable
+{
+public:
+  std::string name;
+  int val;
+  Day8Variable(std::string name, int val);
+  operator==(std::string other);
+};
 
 /*  Declare Windows procedure  */
 LRESULT CALLBACK WindowProcedure (HWND, UINT, WPARAM, LPARAM);
@@ -461,6 +469,120 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
                       out << "Day " << selectedDay << "\nPart 1: " << strAns1 << "\nPart 2: " << ans2;
                       break;
                     }
+//*************************************** DAY 8 ***************************************
+                    case 8:
+                    {
+                      std::string line;
+                      std::list<Day8Variable> vars;
+                      while(std::getline(file, line))
+                      {
+                        if(line.length() > 0)
+                        {
+                          std::istringstream iss(line);
+                          std::list<Day8Variable>::iterator opVar;
+                          std::string operation;
+                          int opValue;
+                          std::list<Day8Variable>::iterator coVar;
+                          std::string condition;
+                          int coValue;
+                          int inputSequence = 0;
+                          do
+                          {
+                            std::string subs;
+                            iss >> subs;
+                            switch(inputSequence)
+                            {
+                              case 0:
+                              {
+                                std::list<Day8Variable>::iterator findVar = std::find(vars.begin(), vars.end(), subs);
+                                if(findVar == vars.end())
+                                {
+                                  Day8Variable temp(subs, 0);
+                                  vars.push_front(temp);
+                                  opVar = vars.begin();
+                                }
+                                else
+                                  opVar = findVar;
+                                break;
+                              }
+                              case 1:
+                              {
+                                operation = subs;
+                                break;
+                              }
+                              case 2:
+                              {
+                                opValue = atoi(subs.c_str());
+                                break;
+                              }
+                              case 3:
+                              {
+                                break;
+                              }
+                              case 4:
+                              {
+                                std::list<Day8Variable>::iterator findVar = std::find(vars.begin(), vars.end(), subs);
+                                if(findVar == vars.end())
+                                {
+                                  Day8Variable temp(subs, 0);
+                                  vars.push_front(temp);
+                                  coVar = vars.begin();
+                                }
+                                else
+                                  coVar = findVar;
+                                break;
+                              }
+                              case 5:
+                              {
+                                condition = subs;
+                                break;
+                              }
+                              case 6:
+                              {
+                                coValue = atoi(subs.c_str());
+                                break;
+                              }
+
+                            }
+                            inputSequence++;
+                          } while (iss);
+                          bool changeVal = false;
+                          if(condition.compare(">=") == 0 && (*coVar).val >= coValue)
+                            changeVal = true;
+                          if(condition.compare("<=") == 0 && (*coVar).val <= coValue)
+                            changeVal = true;
+                          if(condition.compare(">") == 0 && (*coVar).val > coValue)
+                            changeVal = true;
+                          if(condition.compare("<") == 0 && (*coVar).val < coValue)
+                            changeVal = true;
+                          if(condition.compare("==") == 0 && (*coVar).val == coValue)
+                            changeVal = true;
+                          if(condition.compare("!=") == 0 && (*coVar).val != coValue)
+                            changeVal = true;
+                          if(changeVal)
+                          {
+                            if(operation.compare("inc") == 0)
+                            {
+                              (*opVar).val += opValue;
+                              if((*opVar).val >ans2)
+                                ans2= (*opVar).val;
+                            }
+                            if(operation.compare("dec") == 0)
+                            {
+                              (*opVar).val -= opValue;
+                              if((*opVar).val >ans2)
+                                ans2= (*opVar).val;
+                            }
+                          }
+                        }
+                      }
+                      for(std::list<Day8Variable>::iterator it1 = vars.begin(); it1 != vars.end(); ++it1)
+                        if((*it1).val > ans1)
+                          ans1 = (*it1).val;
+                      out << "Day " << selectedDay << "\nPart 1: " << ans1 << "\nPart 2: " << ans2;
+                      break;
+                    }
+
                     default:
                       break;
                   }
@@ -629,4 +751,17 @@ int Day7Program::getMissingWeight(bool toBig)
       return -((*it1)->weight + (max - min));
   }
   return 0;   //Ska aldrig hända
+}
+
+Day8Variable::Day8Variable(std::string name, int val)
+{
+  this->name = name;
+  this->val = val;
+}
+
+Day8Variable::operator==(std::string other)
+{
+  if(this->name.compare(other) == 0)
+    return true;
+  return false;
 }
