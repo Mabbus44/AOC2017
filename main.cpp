@@ -11,6 +11,21 @@
 #include "windowObjects.h"
 #include "smallClasses.h"
 
+class Day7Program
+{
+  public:
+    Day7Program();
+    Day7Program(std::string name, int weight);
+    std::string name;
+    int weight;
+    int trueWeight;
+    std::vector<Day7Program*> children;
+    void searchForChildren(std::vector<Day7Program*> &programList);
+    int getTrueWeight(Day7Program* &wrongProgram);
+    int getMissingWeight(bool toBig);
+};
+
+
 /*  Declare Windows procedure  */
 LRESULT CALLBACK WindowProcedure (HWND, UINT, WPARAM, LPARAM);
 
@@ -86,17 +101,24 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
     switch (message)                  /* handle the messages */
     {
       case WM_CREATE:
+      {
         break;
+      }
       case WM_DESTROY:
+      {
         PostQuitMessage (0);       /* send a WM_QUIT to the message queue */
         break;
+      }
       case WM_COMMAND:
+      {
         switch( HIWORD( wParam ) )
         {
           case BN_CLICKED:
+          {
             switch( LOWORD(wParam) )
             {
               case T000_OPEN_FILE:
+              {
                 OPENFILENAME ofn;
                 char filename[256];
                 ZeroMemory( &ofn , sizeof( ofn));
@@ -118,7 +140,11 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
                   int selectedDay = SendMessage(selectedDayCB, CB_GETCURSEL, 0, 0) + 1;
                   int ans1 = 0;
                   int ans2 = 0;
+                  std::string strAns1;
+                  std::string strAns2;
                   std::string debugAns;
+                  std::string ans;
+                  std::stringstream out;
                   switch(selectedDay)
                   {
 //*************************************** DAY 1 ***************************************
@@ -156,11 +182,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
                         if(digitsArray[i] == digitsArray[i2])
                           ans2 += digitsArray[i];
                       }
-                      std::string ans;
-                      std::stringstream out;
-                      out << "Part 1: " << ans1 << "\nPart 2: " << ans2;
-                      ans = out.str();
-                      SetWindowText(GetDlgItem(hwnd, T000_ANS), ans.c_str());
+                      out << "Day " << selectedDay << "\nPart 1: " << ans1 << "\nPart 2: " << ans2;
                       break;
                     }
 //*************************************** DAY 2 ***************************************
@@ -217,6 +239,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
                           for (std::list<int>::const_iterator it3 = it1->begin(); it3 != it1->end(); ++it3)
                             if(*it2%(*it3) == 0 && *it2/(*it3) != 1)
                               ans2 += *it2/(*it3);
+                      out << "Day " << selectedDay << "\nPart 1: " << ans1 << "\nPart 2: " << ans2;
                       break;
                     }
 //*************************************** DAY 4 ***************************************
@@ -257,6 +280,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
                         if(valid2)
                           ans2++;
                       }
+                      out << "Day " << selectedDay << "\nPart 1: " << ans1 << "\nPart 2: " << ans2;
                       break;
                     }
 //*************************************** DAY 5 ***************************************
@@ -300,21 +324,155 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
                           maze2[oldPos]++;
                         ans2++;
                       }
+                      out << "Day " << selectedDay << "\nPart 1: " << ans1 << "\nPart 2: " << ans2;
+                      break;
+                    }
+//*************************************** DAY 6 ***************************************
+                    case 6:
+                    {
+                      std::string line;
+                      std::getline(file, line);
+                      std::istringstream iss(line);
+                      std::vector<int> v;
+                      std::vector<std::vector<int>> oldVectors;
+                      do
+                      {
+                          std::string subs;
+                          iss >> subs;
+                          if(subs.length() > 0)
+                            v.push_back(atoi(subs.c_str()));
+                      } while (iss);
+                      int seqLength = v.size();
+                      int loopBackTo = 0;
+                      int vCount = 0;
+                      bool done = false;
+                      oldVectors.push_back(v);
+                      while(!done)
+                      {
+                        int vPos = 0;
+                        int vMax = 0;
+                        for(int i=0; i<seqLength; i++)
+                        {
+                          if(v[i]>vMax)
+                          {
+                            vPos = i;
+                            vMax = v[i];
+                          }
+                        }
+                        v[vPos] = 0;
+                        while(vMax>0)
+                        {
+                          vPos++;
+                          if(vPos>=seqLength)
+                            vPos = 0;
+                          v[vPos]++;
+                          vMax--;
+                        }
+                        for(std::vector<std::vector<int>>::iterator it=oldVectors.begin(); it!=oldVectors.end(); ++it)
+                        {
+                          bool identical = true;
+                          for(int i=0; i<seqLength && identical; i++)
+                            if(v[i] != (*it)[i])
+                              identical = false;
+                          if(identical)
+                          {
+                            done = true;
+                            loopBackTo = it - oldVectors.begin();
+                          }
+                        }
+                        oldVectors.push_back(v);
+                        vCount++;
+                      }
+                      ans1 = vCount;
+                      ans2 = vCount - loopBackTo;
+                      out << "Day " << selectedDay << "\nPart 1: " << ans1 << "\nPart 2: " << ans2;
+                      break;
+                    }
+//*************************************** DAY 7 ***************************************
+                    case 7:
+                    {
+                      std::string line;
+                      std::vector<Day7Program*> allPrograms;
+                      Day7Program* base;
+                      while(std::getline(file, line))
+                      {
+                        if(line.length() > 0)
+                        {
+                          std::istringstream iss(line);
+                          int inputSequence = 0;
+                          Day7Program* p = new Day7Program();
+                          do
+                          {
+                              std::string subs;
+                              iss >> subs;
+                              if(subs.length() > 0)
+                              {
+                                switch(inputSequence)
+                                {
+                                  case 0:
+                                  {
+                                    p->name = subs;
+                                    break;
+                                  }
+                                  case 1:
+                                  {
+                                    p->weight = atoi(subs.substr(1, subs.length()-2).c_str());
+                                    break;
+                                  }
+                                  case 2:
+                                    break;
+                                  default:
+                                  {
+                                    if(subs.substr(subs.length()-1, 1).compare(",") == 0)
+                                      p->children.push_back(new Day7Program(subs.substr(0, subs.length()-1), 0));
+                                    else
+                                      p->children.push_back(new Day7Program(subs, 0));
+                                    break;
+                                  }
+                                }
+                                inputSequence++;
+                              }
+                          } while (iss);
+                          if(p->name.length() > 0)
+                            allPrograms.push_back(p);
+                        }
+                      }
+                      base = *(allPrograms.begin());
+                      bool baseFound = false;
+                      while(!baseFound)
+                      {
+                        baseFound = true;
+                        for(std::vector<Day7Program*>::iterator it1=allPrograms.begin(); it1!=allPrograms.end() && baseFound; ++it1)
+                        {
+                          for(std::vector<Day7Program*>::iterator it2=(*it1)->children.begin(); it2!=(*it1)->children.end() && baseFound; ++it2)
+                          {
+                            if(base->name.compare((*it2)->name) == 0)
+                            {
+                               base = (*it1);
+                               baseFound=false;
+                            }
+                          }
+                        }
+                      }
+                      strAns1 = base->name;
+                      base->searchForChildren(allPrograms);
+                      Day7Program* p = NULL;
+                      ans2 = -base->getTrueWeight(p);
+                      out << "Day " << selectedDay << "\nPart 1: " << strAns1 << "\nPart 2: " << ans2;
                       break;
                     }
                     default:
                       break;
                   }
-                  std::string ans;
-                  std::stringstream out;
-                  out << "Day " << selectedDay << "\nPart 1: " << ans1 << "\nPart 2: " << ans2;
                   ans = out.str();
                   SetWindowText(GetDlgItem(hwnd, T000_ANS), ans.c_str());
                   file.close();
                 }
                 break;
+              }
             }
             break;
+          }
           case CBN_SELCHANGE:
           {
             switch( LOWORD(wParam) )
@@ -329,16 +487,11 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
                 ShowWindow(t030Input, SW_HIDE);
                 switch(selectedDay)
                 {
-                  case 1:
-                  case 2:
-                  case 4:
-                  case 5:
-                    ShowWindow(t000OpenFile, SW_SHOW);
-                    break;
                   case 3:
                     ShowWindow(t030Input, SW_SHOW);
                     break;
                   default:
+                    ShowWindow(t000OpenFile, SW_SHOW);
                     break;
                 }
                 break;
@@ -347,7 +500,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
           }
         }
         break;
-
+      }
       case WM_CTLCOLORSTATIC:
       {
         HDC hdcStatic = (HDC) wParam;
@@ -360,4 +513,120 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
         return DefWindowProc (hwnd, message, wParam, lParam);
     }
     return 0;
+}
+
+
+
+
+Day7Program::Day7Program()
+{
+  name = "";
+  weight = 0;
+}
+
+
+Day7Program::Day7Program(std::string name, int weight)
+{
+  this->name = name;
+  this->weight = weight;
+}
+
+void Day7Program::searchForChildren(std::vector<Day7Program*> &programList)
+{
+  for(std::vector<Day7Program*>::iterator it1=this->children.begin(); it1!=this->children.end(); ++it1)
+  {
+    for(std::vector<Day7Program*>::iterator it2=programList.begin(); it2!=programList.end(); ++it2)
+    {
+      if((*it1)->name.compare((*it2)->name) == 0)
+      {
+        delete (*it1);
+        (*it1) = (*it2);
+      }
+    }
+    (*it1)->searchForChildren(programList);
+  }
+}
+
+int Day7Program::getTrueWeight(Day7Program* &wrongProgram)
+{
+  int weight = 0;
+  int oldWeight = 0;
+  int totWeight = 0;
+  int min = -1;
+  int max = -1;
+  bool childIsWrong = false;
+  bool wrongProgramAlreadyFound = false;
+  bool grandchildIsWrong = false;
+
+  if(wrongProgram != NULL)
+    wrongProgramAlreadyFound = true;
+  for(std::vector<Day7Program*>::iterator it1=this->children.begin(); it1!=this->children.end(); ++it1)
+  {
+    oldWeight = weight;
+    weight = (*it1)->getTrueWeight(wrongProgram);
+    if(weight < 0)
+      return weight;
+    totWeight += weight;
+    if(oldWeight != 0 && oldWeight != weight)
+      childIsWrong = true;
+    if(weight < min || min == -1)
+      min = weight;
+    if(weight > max)
+      max = weight;
+  }
+  if(wrongProgram != NULL && !wrongProgramAlreadyFound)
+    grandchildIsWrong = true;
+  if(grandchildIsWrong)
+  {
+    for(std::vector<Day7Program*>::iterator it1=this->children.begin(); it1!=this->children.end(); ++it1)
+    {
+      if(wrongProgram == *it1)
+      {
+        if((*it1)->trueWeight > min)
+          return wrongProgram->getMissingWeight(true);
+        else
+          return wrongProgram->getMissingWeight(false);
+      }
+    }
+    std::cout << "grandchildIsWrong: " << this->name << std::endl;
+    for(std::vector<Day7Program*>::iterator it1=this->children.begin(); it1!=this->children.end(); ++it1)
+    {
+      std::cout << "   Child: " << (*it1)->name << std::endl;
+    }
+  }
+  if(childIsWrong)
+  {
+    wrongProgram = this;
+    std::cout << "ChildIsWrong: " << this->name << std::endl;
+    for(std::vector<Day7Program*>::iterator it1=this->children.begin(); it1!=this->children.end(); ++it1)
+    {
+      std::cout << "   Child: " << (*it1)->name << std::endl;
+    }
+  }
+  trueWeight = totWeight + this->weight;
+  return trueWeight;
+}
+
+int Day7Program::getMissingWeight(bool toBig)
+{
+  int min = -1;
+  int max = -1;
+  int weight = 0;
+  for(std::vector<Day7Program*>::iterator it1=this->children.begin(); it1!=this->children.end(); ++it1)
+  {
+    weight = (*it1)->trueWeight;
+    if(weight < min || min == -1)
+      min = weight;
+    if(weight > max)
+      max = weight;
+  }
+  std::cout << "getMissingWeight: " << this->name << std::endl;
+  for(std::vector<Day7Program*>::iterator it1=this->children.begin(); it1!=this->children.end(); ++it1)
+  {
+    if((*it1)->trueWeight > min && toBig)
+      return -((*it1)->weight - (max - min));
+    if((*it1)->trueWeight < max && !toBig)
+      return -((*it1)->weight + (max - min));
+  }
+  return 0;   //Ska aldrig hända
 }

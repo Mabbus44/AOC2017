@@ -2,6 +2,8 @@
 #define SMALLCLASSES_H_INCLUDED
 
 #include <windows.h>
+#include <string>
+#include <vector>
 
 struct Block
 {
