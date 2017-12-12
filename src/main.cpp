@@ -180,6 +180,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
                     case 11:
                     {
                       ans = day11(file);
+                      int a= 1+1;
                       break;
                     }
                     default:
