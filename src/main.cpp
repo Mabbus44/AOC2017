@@ -15,6 +15,7 @@
 #include "day09.h"
 #include "day10.h"
 #include "day11.h"
+#include "day12.h"
 
 
 /*  Declare Windows procedure  */
@@ -180,7 +181,11 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
                     case 11:
                     {
                       ans = day11(file);
-                      int a= 1+1;
+                      break;
+                    }
+                    case 12:
+                    {
+                      ans = day12(file);
                       break;
                     }
                     default:

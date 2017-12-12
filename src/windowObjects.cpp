@@ -36,6 +36,7 @@ void defineWindowObjects(HWND hwnd)
   SendMessage(hwndCB, CB_ADDSTRING, 0, (LPARAM)"Day 9");
   SendMessage(hwndCB, CB_ADDSTRING, 0, (LPARAM)"Day 10");
   SendMessage(hwndCB, CB_ADDSTRING, 0, (LPARAM)"Day 11");
+  SendMessage(hwndCB, CB_ADDSTRING, 0, (LPARAM)"Day 12");
   SendMessage(hwndCB, CB_SETCURSEL, 0, 0);
   HWND hwndEdit = CreateWindowEx(WS_EX_CLIENTEDGE, "EDIT", "", WS_CHILD | WS_BORDER | ES_LEFT, 120, 10, 100, 20, hwnd, (HMENU)T030_INPUT, (HINSTANCE)GetWindowLong(hwnd, GWL_HINSTANCE), NULL);
   oldEditProc = (WNDPROC)SetWindowLongPtr(hwndEdit, GWLP_WNDPROC, (LONG_PTR)subEditProc);

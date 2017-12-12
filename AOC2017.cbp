@@ -53,6 +53,7 @@
 		<Unit filename="include/day09.h" />
 		<Unit filename="include/day10.h" />
 		<Unit filename="include/day11.h" />
+		<Unit filename="include/day12.h" />
 		<Unit filename="include/windowObjects.h" />
 		<Unit filename="src/day01.cpp" />
 		<Unit filename="src/day02.cpp" />
@@ -65,6 +66,7 @@
 		<Unit filename="src/day09.cpp" />
 		<Unit filename="src/day10.cpp" />
 		<Unit filename="src/day11.cpp" />
+		<Unit filename="src/day12.cpp" />
 		<Unit filename="src/main.cpp" />
 		<Unit filename="src/windowObjects.cpp" />
 		<Extensions>
