@@ -13,6 +13,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-g" />
+					<Add directory="include" />
 				</Compiler>
 				<Linker>
 					<Add library="libcomdlg32.a" />
@@ -25,6 +26,7 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add directory="include" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
@@ -40,17 +42,31 @@
 			<Add library="kernel32" />
 			<Add library="comctl32" />
 		</Linker>
-		<Unit filename="main.cpp" />
-		<Unit filename="smallClasses.cpp">
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
-		<Unit filename="smallClasses.h">
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
-		<Unit filename="windowObjects.cpp" />
-		<Unit filename="windowObjects.h">
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
+		<Unit filename="include/day01.h" />
+		<Unit filename="include/day02.h" />
+		<Unit filename="include/day03.h" />
+		<Unit filename="include/day04.h" />
+		<Unit filename="include/day05.h" />
+		<Unit filename="include/day06.h" />
+		<Unit filename="include/day07.h" />
+		<Unit filename="include/day08.h" />
+		<Unit filename="include/day09.h" />
+		<Unit filename="include/day10.h" />
+		<Unit filename="include/day11.h" />
+		<Unit filename="include/windowObjects.h" />
+		<Unit filename="src/day01.cpp" />
+		<Unit filename="src/day02.cpp" />
+		<Unit filename="src/day03.cpp" />
+		<Unit filename="src/day04.cpp" />
+		<Unit filename="src/day05.cpp" />
+		<Unit filename="src/day06.cpp" />
+		<Unit filename="src/day07.cpp" />
+		<Unit filename="src/day08.cpp" />
+		<Unit filename="src/day09.cpp" />
+		<Unit filename="src/day10.cpp" />
+		<Unit filename="src/day11.cpp" />
+		<Unit filename="src/main.cpp" />
+		<Unit filename="src/windowObjects.cpp" />
 		<Extensions>
 			<code_completion />
 			<envvars />
