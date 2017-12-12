@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="AOC2017" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/AOC2017" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-g" />
+					<Add directory="include" />
+				</Compiler>
+				<Linker>
+					<Add library="libcomdlg32.a" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/AOC2017" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add directory="include" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+		</Compiler>
+		<Linker>
+			<Add library="gdi32" />
+			<Add library="user32" />
+			<Add library="kernel32" />
+			<Add library="comctl32" />
+		</Linker>
+		<Unit filename="include/day01.h" />
+		<Unit filename="include/day02.h" />
+		<Unit filename="include/day03.h" />
+		<Unit filename="include/day04.h" />
+		<Unit filename="include/day05.h" />
+		<Unit filename="include/day06.h" />
+		<Unit filename="include/day07.h" />
+		<Unit filename="include/day08.h" />
+		<Unit filename="include/day09.h" />
+		<Unit filename="include/day10.h" />
+		<Unit filename="include/day11.h" />
+		<Unit filename="include/windowObjects.h" />
+		<Unit filename="src/day01.cpp" />
+		<Unit filename="src/day02.cpp" />
+		<Unit filename="src/day03.cpp" />
+		<Unit filename="src/day04.cpp" />
+		<Unit filename="src/day05.cpp" />
+		<Unit filename="src/day06.cpp" />
+		<Unit filename="src/day07.cpp" />
+		<Unit filename="src/day08.cpp" />
+		<Unit filename="src/day09.cpp" />
+		<Unit filename="src/day10.cpp" />
+		<Unit filename="src/day11.cpp" />
+		<Unit filename="src/main.cpp" />
+		<Unit filename="src/windowObjects.cpp" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>
