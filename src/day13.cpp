@@ -59,37 +59,6 @@ std::string day13(std::ifstream& file)
           caught = true;
     }
   }
-  /*while(caught)
-  {
-    caught = false;
-    depth = -1;
-    delay++;
-    for(int i=0; i<int(walls.size()); i++)
-      walls[i].pos = 0;
-    for(int i=0; i<delay; i++)
-      for(int i2=0; i2<int(walls.size()); i2++)
-        walls[i2].move();
-//    std::cout << std::endl << "Delay: " << delay << std::endl;
-    while(depth < maxDepth && !caught)
-    {
-      depth++;
-//      std::cout << "Pos: " << depth  << std::endl;
-      for(int i=0; i<int(walls.size())  && !caught; i++)
-      {
-        if(walls[i].depth == depth && walls[i].pos == 0)
-        {
-          caught = true;
-//          std::cout << "*";
-        }
-//        std::cout << walls[i].depth << ":" << walls[i].pos << "  ";
-        walls[i].move();
-      }
-      //std::cout << std::endl;
-      //if(caught)
-//        std::cout << "caught!!!!" << std::endl;
-    }
-    std::cout << delay << std::endl;
-  }*/
   ans2 = delay;
   std::stringstream out;
   out << "Day 13\nPart 1: " << ans1 << "\nPart 2: " << ans2;
