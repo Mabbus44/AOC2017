@@ -17,6 +17,7 @@
 #include "day11.h"
 #include "day12.h"
 #include "day13.h"
+#include "day14.h"
 
 
 /*  Declare Windows procedure  */
@@ -220,6 +221,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
                 switch(selectedDay)
                 {
                   case 3:
+                  case 14:
                     ShowWindow(t030Input, SW_SHOW);
                     break;
                   default:
