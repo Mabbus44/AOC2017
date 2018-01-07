@@ -20,6 +20,7 @@
 #include "day14.h"
 #include "day15.h"
 #include "day16.h"
+#include "day17.h"
 
 
 /*  Declare Windows procedure  */
@@ -234,6 +235,7 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
                 {
                   case 3:
                   case 14:
+                  case 17:
                     ShowWindow(t030Input, SW_SHOW);
                     break;
                   default:

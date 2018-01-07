@@ -30,6 +30,15 @@ LRESULT CALLBACK subEditProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
               SetWindowText(GetDlgItem(GetParent(hwnd), T000_ANS), ans.c_str());
               break;
             }
+            case 17:
+            {
+              char inputText[1000];
+              GetWindowText(hwnd, inputText, sizeof(inputText));
+              std::string intputStr = inputText;
+              ans = day17(intputStr);
+              SetWindowText(GetDlgItem(GetParent(hwnd), T000_ANS), ans.c_str());
+              break;
+            }
           }
           return 0;
           break;
@@ -62,6 +71,7 @@ void defineWindowObjects(HWND hwnd)
   SendMessage(hwndCB, CB_ADDSTRING, 0, (LPARAM)"Day 14");
   SendMessage(hwndCB, CB_ADDSTRING, 0, (LPARAM)"Day 15");
   SendMessage(hwndCB, CB_ADDSTRING, 0, (LPARAM)"Day 16");
+  SendMessage(hwndCB, CB_ADDSTRING, 0, (LPARAM)"Day 17");
   SendMessage(hwndCB, CB_SETCURSEL, 0, 0);
   HWND hwndEdit = CreateWindowEx(WS_EX_CLIENTEDGE, "EDIT", "", WS_CHILD | WS_BORDER | ES_LEFT, 120, 10, 100, 20, hwnd, (HMENU)T030_INPUT, (HINSTANCE)GetWindowLong(hwnd, GWL_HINSTANCE), NULL);
   oldEditProc = (WNDPROC)SetWindowLongPtr(hwndEdit, GWLP_WNDPROC, (LONG_PTR)subEditProc);

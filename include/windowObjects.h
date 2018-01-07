@@ -8,6 +8,7 @@
 #include <windows.h>
 #include "day03.h"
 #include "day14.h"
+#include "day17.h"
 
 #define T000_OPEN_FILE      100
 #define T000_ANS            101
