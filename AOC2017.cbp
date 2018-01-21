@@ -59,6 +59,14 @@
 		<Unit filename="include/day15.h" />
 		<Unit filename="include/day16.h" />
 		<Unit filename="include/day17.h" />
+		<Unit filename="include/day18.h" />
+		<Unit filename="include/day19.h" />
+		<Unit filename="include/day20.h" />
+		<Unit filename="include/day21.h" />
+		<Unit filename="include/day22.h" />
+		<Unit filename="include/day23.h" />
+		<Unit filename="include/day24.h" />
+		<Unit filename="include/day25.h" />
 		<Unit filename="include/windowObjects.h" />
 		<Unit filename="src/day01.cpp" />
 		<Unit filename="src/day02.cpp" />
@@ -77,6 +85,14 @@
 		<Unit filename="src/day15.cpp" />
 		<Unit filename="src/day16.cpp" />
 		<Unit filename="src/day17.cpp" />
+		<Unit filename="src/day18.cpp" />
+		<Unit filename="src/day19.cpp" />
+		<Unit filename="src/day20.cpp" />
+		<Unit filename="src/day21.cpp" />
+		<Unit filename="src/day22.cpp" />
+		<Unit filename="src/day23.cpp" />
+		<Unit filename="src/day24.cpp" />
+		<Unit filename="src/day25.cpp" />
 		<Unit filename="src/main.cpp" />
 		<Unit filename="src/windowObjects.cpp" />
 		<Extensions>

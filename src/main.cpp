@@ -21,6 +21,14 @@
 #include "day15.h"
 #include "day16.h"
 #include "day17.h"
+#include "day18.h"
+#include "day19.h"
+#include "day20.h"
+#include "day21.h"
+#include "day22.h"
+#include "day23.h"
+#include "day24.h"
+#include "day25.h"
 
 
 /*  Declare Windows procedure  */
@@ -206,6 +214,46 @@ LRESULT CALLBACK WindowProcedure (HWND hwnd, UINT message, WPARAM wParam, LPARAM
                     case 16:
                     {
                       ans = day16(file);
+                      break;
+                    }
+                    case 18:
+                    {
+                      ans = day18(file);
+                      break;
+                    }
+                    case 19:
+                    {
+                      ans = day19(file);
+                      break;
+                    }
+                    case 20:
+                    {
+                      ans = day20(file);
+                      break;
+                    }
+                    case 21:
+                    {
+                      ans = day21(file);
+                      break;
+                    }
+                    case 22:
+                    {
+                      ans = day22(file);
+                      break;
+                    }
+                    case 23:
+                    {
+                      ans = day23(file);
+                      break;
+                    }
+                    case 24:
+                    {
+                      ans = day24(file);
+                      break;
+                    }
+                    case 25:
+                    {
+                      ans = day25(file);
                       break;
                     }
                     default:
