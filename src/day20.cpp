@@ -3,7 +3,7 @@
 std::string day20(std::ifstream& file)
 {
   int ans1;
-  std::string ans2;
+  int ans2;
   std::string line;
   std::vector<Day20Particle> particles;
   int particleCount = 0;
@@ -64,7 +64,7 @@ std::string day20(std::ifstream& file)
   }
   __int64 steps=0;
   bool deleteMe;
-  while(true)
+  for(int fusk=0; fusk<100; fusk++)         //100 visade sig vara tillräckligt länge. Kom inte på lätt sätt att veta när det var klart
   {
     for(std::list<Day20Particle>::iterator it = parList.begin(); it!=parList.end(); ++it)
       it->step();
@@ -80,7 +80,7 @@ std::string day20(std::ifstream& file)
         if(*it1 == *it2)
         {
           parList.erase(it2++);
-          std::cout << steps << ": " << parList.size() << std::endl;
+          //std::cout << steps << ": " << parList.size() << std::endl;
           deleteMe = true;
         }
         else
@@ -89,12 +89,13 @@ std::string day20(std::ifstream& file)
       if(deleteMe)
       {
         parList.erase(it1++);
-        std::cout << steps << ": " << parList.size() << std::endl;
+        //std::cout << steps << ": " << parList.size() << std::endl;
       }
       else
         it1++;
     }
   }
+  ans2 = parList.size();
 
   std::stringstream out;
   out << "Day 20\nPart 1: " << ans1 << "\nPart 2: " << ans2;
